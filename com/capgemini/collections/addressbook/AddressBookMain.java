@@ -3,7 +3,7 @@ package com.capgemini.collections.addressbook;
 import java.util.*;
 
 /**
- * 
+ * Added ability to delete a contact
  */
 
 /**
@@ -43,13 +43,28 @@ public class AddressBookMain {
 		return contactFound;
 	}
 	//Method to edit a contact
+	public boolean removeDetails(String firstName, String lastName) {
+		ContactsUC1 removeObj;
+		boolean contactFound = false;
+		for (int i = 0; i < addressList.size(); i++) {
+			removeObj = (ContactsUC1) addressList.get(i);
+			if ((removeObj.getFirstName().equals(firstName)) && (removeObj.getLastName().equals(lastName))) {
+				addressList.remove(i);
+				contactFound = true;
+				break;
+			}
+		}
+		return contactFound;
+	}
+	//Method to delete a contact
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		AddressBookMain addressObj = new AddressBookMain();
 		int choice = 0;
 
 		while (choice != 3) {
-			System.out.println("Enter a choice: \n 1)Add a new contact \n 2)Edit a contact \n 3)Exit");
+			System.out.println(
+					"Enter a choice: \n 1)Add a new contact \n 2)Edit a contact \n 3)Delete Contact \n 4)Exit");
 			choice = Integer.parseInt(sc.nextLine());
 			switch (choice) {
 			case 1: {
@@ -77,7 +92,7 @@ public class AddressBookMain {
 				break;
 			}
 			case 2: {
-				System.out.println("Enter first name, press Enter, and then enter last name of person to edit details:");
+				System.out.println("Enter first name, press Enter key, and then enter last name of person to edit details:");
 				String firstName = sc.nextLine();
 				String lastName = sc.nextLine();
 				boolean contactFound = addressObj.editDetails(firstName, lastName);
@@ -88,6 +103,17 @@ public class AddressBookMain {
 				break;
 			}
 			case 3: {
+				System.out.println("Enter first name, press Enter key, and then enter last name of person to delete data");
+				String firstName = sc.nextLine();
+				String lastName = sc.nextLine();
+				boolean contactFound = addressObj.removeDetails(firstName, lastName);
+				if (contactFound == true)
+					System.out.println("Details successfully deleted");
+				else
+					System.out.println("Contact not found");
+				break;
+			}
+			case 4: {
 				System.exit(0);
 			}
 			}
