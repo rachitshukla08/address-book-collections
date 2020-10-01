@@ -3,7 +3,7 @@ package com.capgemini.collections.addressbook;
 import java.util.*;
 
 /**
- * Added ability to enter contact for different person in UC 3 itself,using the same for UC5
+ * Refactored to add multiple address book to the system. Each address book has a unique name
  */
 
 /**
@@ -13,11 +13,15 @@ import java.util.*;
 public class AddressBookMain {
 	Scanner sc = new Scanner(System.in);
 	private List<ContactsUC1> addressList = new ArrayList<ContactsUC1>();
-	//Used a list to add multiple person to address book
+
+	HashMap<String, List<ContactsUC1>> addressBookMap = new HashMap<String, List<ContactsUC1>>();
+
+	// Map to store multiple address books to satisfy condition of unique name
 	public void addContact(ContactsUC1 contactObj) {
 		addressList.add(contactObj);
 	}
-	
+	// Add contact to address book
+
 	public boolean editDetails(String firstName, String lastName) {
 		ContactsUC1 editObj;
 		boolean contactFound = false;
@@ -42,6 +46,7 @@ public class AddressBookMain {
 		}
 		return contactFound;
 	}
+	// Edit contact details
 
 	public boolean removeDetails(String firstName, String lastName) {
 		ContactsUC1 removeObj;
@@ -56,15 +61,41 @@ public class AddressBookMain {
 		}
 		return contactFound;
 	}
+	// Remove contact from given address book
+
+	public void addAddressList(String listName) {
+		List<ContactsUC1> newAddressList = new ArrayList<ContactsUC1>();
+		addressBookMap.put(listName, newAddressList);
+		System.out.println("Address Book added");
+	}
+	//Add an address book to map
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		AddressBookMain addressObj = new AddressBookMain();
 		int choice = 0;
 
-		while (choice != 3) {
+		while (choice != 6) {
+			if (addressObj.addressBookMap.isEmpty()) {
+				System.out.println("Please add an address book to begin");
+				System.out.println("Enter the name of address book that u want to add:");
+				String listName = sc.nextLine();
+				addressObj.addAddressList(listName);
+			}
+			//If no address book is present, it asks to add at least one address book to begin
+			System.out.println("Enter the name of the address book you want to access");
+			String listName = sc.nextLine();
+			if (addressObj.addressBookMap.containsKey(listName)) {
+				addressObj.addressList = addressObj.addressBookMap.get(listName);
+			}
+
+			else {
+				System.out.println("Address list with name" + listName + " not present. Please add it first.");
+			}
+			// This condition checks if there is at least one address book present. If not,
+			// you have to add an address book to begin. Also sets the address book for the current program loop.
 			System.out.println(
-					"Enter a choice: \n 1)Add a new contact \n 2)Edit a contact \n 3)Delete Contact \n 4)Exit");
+					"Enter a choice: \n 1)Add a new contact \n 2)Edit a contact \n 3)Delete Contact \n 4)Add Address Book \n 5)View Address Book Contacts \n 6)Exit");
 			choice = Integer.parseInt(sc.nextLine());
 			switch (choice) {
 			case 1: {
@@ -114,7 +145,17 @@ public class AddressBookMain {
 				break;
 			}
 			case 4: {
-				System.exit(0);
+				System.out.println("Enter the name of address book that u want to add:");
+				listName = sc.nextLine();
+				addressObj.addAddressList(listName);
+				break;
+			}
+			case 5: {
+				System.out.println(" " + addressObj.addressList);
+				break;
+			}
+			case 6: {
+				System.out.println("Thank you for using the application");
 			}
 			}
 		}
