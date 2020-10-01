@@ -3,7 +3,7 @@ package com.capgemini.collections.addressbook;
 import java.util.*;
 
 /**
- * Added ability to delete a contact
+ * Added ability to enter contact for different person in UC 3 itself,using the same for UC5
  */
 
 /**
@@ -13,11 +13,11 @@ import java.util.*;
 public class AddressBookMain {
 	Scanner sc = new Scanner(System.in);
 	private List<ContactsUC1> addressList = new ArrayList<ContactsUC1>();
-
+	//Used a list to add multiple person to address book
 	public void addContact(ContactsUC1 contactObj) {
 		addressList.add(contactObj);
 	}
-	//Method to add a new contact
+	
 	public boolean editDetails(String firstName, String lastName) {
 		ContactsUC1 editObj;
 		boolean contactFound = false;
@@ -42,7 +42,7 @@ public class AddressBookMain {
 		}
 		return contactFound;
 	}
-	//Method to edit a contact
+
 	public boolean removeDetails(String firstName, String lastName) {
 		ContactsUC1 removeObj;
 		boolean contactFound = false;
@@ -56,7 +56,7 @@ public class AddressBookMain {
 		}
 		return contactFound;
 	}
-	//Method to delete a contact
+
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		AddressBookMain addressObj = new AddressBookMain();
