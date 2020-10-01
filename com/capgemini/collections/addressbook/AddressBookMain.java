@@ -13,9 +13,7 @@ import java.util.*;
 public class AddressBookMain {
 	Scanner sc = new Scanner(System.in);
 	private List<ContactsUC1> addressList = new ArrayList<ContactsUC1>();
-
 	HashMap<String, List<ContactsUC1>> addressBookMap = new HashMap<String, List<ContactsUC1>>();
-
 	// Map to store multiple address books to satisfy condition of unique name
 	public void addContact(ContactsUC1 contactObj) {
 		addressList.add(contactObj);
