@@ -26,8 +26,7 @@ public class AddressBookMain {
 		else
 			System.out.println("Contact already present. Duplication not allowed");
 	}
-	// Add contact to address book UC 2 and ensure there is no duplicate contact UC
-	// 7
+	// Add contact to address book UC 2 and ensure there is no duplicate contact UC7
 
 	private boolean editDetails(String firstName, String lastName) {
 		ContactsUC1 editObj;
@@ -77,13 +76,13 @@ public class AddressBookMain {
 	}
 	// Add multiple address book to system UC6
 
-	private void searchAcrossCityState(int searchChoice, String cityOrState) {
+	private void searchPersonAcrossCityState(String searchPerson,int searchChoice, String cityOrState) {
 		for (Map.Entry<String, List<ContactsUC1>> entry : addressBookMap.entrySet()) {
 			List<ContactsUC1> list = entry.getValue();
 			if (searchChoice == 1)
-				list.stream().filter(obj -> obj.getCity().equals(cityOrState)).forEach(System.out::println);
+				list.stream().filter(obj -> ((obj.getCity().equals(cityOrState))&&(obj.getFirstName().equals(searchPerson)))).forEach(System.out::println);
 			else if(searchChoice == 2)
-				list.stream().filter(obj -> obj.getState().equals(cityOrState)).forEach(System.out::println);
+				list.stream().filter(obj -> ((obj.getState().equals(cityOrState))&&(obj.getFirstName().equals(searchPerson)))).forEach(System.out::println);
 		}
 	}
 	// Search person in a city or state across multiple address book UC 8
@@ -178,11 +177,13 @@ public class AddressBookMain {
 				break;
 			}
 			case 6: {
+				System.out.println("Enter first name of person to search");
+				String searchPerson = sc.nextLine();
 				System.out.println("Enter the name of city or state");
 				String cityOrState = sc.nextLine();
 				System.out.println("Enter 1 if you entered name of a city \nEnter 2 if you entered name of a state");
 				int searchChoice = Integer.parseInt(sc.nextLine());
-				addressObj.searchAcrossCityState(searchChoice, cityOrState);
+				addressObj.searchPersonAcrossCityState(searchPerson,searchChoice, cityOrState);
 			}
 			case 7: {
 				System.out.println("Thank you for using the application");
