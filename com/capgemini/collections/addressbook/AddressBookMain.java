@@ -3,7 +3,7 @@ package com.capgemini.collections.addressbook;
 import java.util.*;
 
 /**
- * Ability to search Person in a City or State across the multiple AddressBook
+ * Ability to view Persons by City or State
  */
 
 /**
@@ -14,17 +14,28 @@ public class AddressBookMain {
 	Scanner sc = new Scanner(System.in);
 	private List<ContactsUC1> addressList = new LinkedList<ContactsUC1>();
 	HashMap<String, List<ContactsUC1>> addressBookMap = new HashMap<String, List<ContactsUC1>>();
-
 	// Map to store multiple address books to satisfy condition of unique name
-	/**
-	 * @param contactObj
-	 */
-	private void addContact(ContactsUC1 contactObj) {
+	HashMap<ContactsUC1,String> personCityMap = new HashMap<ContactsUC1, String>();
+	HashMap<ContactsUC1,String> personStateMap = new HashMap<ContactsUC1, String>();
+	//Dictionary of city and person as well as state and person for UC9
+	
+	private void addToDictionary(boolean contactIsAdded,ContactsUC1 contactObj) {
+		if(contactIsAdded==true) {
+			personCityMap.put(contactObj, contactObj.getCity());
+			personStateMap.put(contactObj, contactObj.getState());
+		}
+	}
+	
+	private boolean addContact(ContactsUC1 contactObj) {
 		boolean isPresent = addressList.stream().anyMatch(obj -> obj.equals(contactObj));
-		if (isPresent == false)
+		if (isPresent == false) {
 			addressList.add(contactObj);
-		else
+			return true;
+		}
+		else {
 			System.out.println("Contact already present. Duplication not allowed");
+			return false;
+		}
 	}
 	// Add contact to address book UC 2 and ensure there is no duplicate contact UC7
 
@@ -86,13 +97,23 @@ public class AddressBookMain {
 		}
 	}
 	// Search person in a city or state across multiple address book UC 8
+	
+	private void viewPersonsByCityState(String cityOrState, int searchChoice) {
+		for (Map.Entry<String, List<ContactsUC1>> entry : addressBookMap.entrySet()) {
+			List<ContactsUC1> list = entry.getValue();
+			if (searchChoice == 1)
+				list.stream().filter(obj -> obj.getCity().equals(cityOrState)).forEach(System.out::println);
+			else if(searchChoice == 2)
+				list.stream().filter(obj -> obj.getState().equals(cityOrState)).forEach(System.out::println);
+		}
+	}
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		AddressBookMain addressObj = new AddressBookMain();
 		int choice = 0;
 
-		while (choice != 7) {
+		while (choice != 8) {
 			if (addressObj.addressBookMap.isEmpty()) {
 				System.out.println("Please add an address book to begin");
 				System.out.println("Enter the name of address book that u want to add:");
@@ -115,7 +136,7 @@ public class AddressBookMain {
 			// current program loop.
 			System.out.println(
 					"Enter a choice: \n 1)Add a new contact \n 2)Edit a contact \n 3)Delete Contact \n 4)Add Address Book \n 5)View current Address Book Contacts"
-							+ " \n 6)Search person in a city or state across the multiple Address Books \n 7)Exit");
+							+ " \n 6)Search person in a city or state across the multiple Address Books \n 7)View persons by city or state \n 8)Exit");
 			choice = Integer.parseInt(sc.nextLine());
 			switch (choice) {
 			case 1: {
@@ -139,7 +160,10 @@ public class AddressBookMain {
 				// Input
 				ContactsUC1 contactObj = new ContactsUC1(firstName, lastName, address, city, state, zip, phoneNo,
 						email);
-				addressObj.addContact(contactObj);
+				boolean contactIsAdded = addressObj.addContact(contactObj);
+				//UC1
+				addressObj.addToDictionary(contactIsAdded,contactObj);
+				//UC9
 				break;
 			}
 			case 2: {
@@ -186,6 +210,13 @@ public class AddressBookMain {
 				addressObj.searchPersonAcrossCityState(searchPerson,searchChoice, cityOrState);
 			}
 			case 7: {
+				System.out.println("Enter the name of city or state");
+				String cityOrState = sc.nextLine();
+				System.out.println("Enter 1 if you entered name of a city \nEnter 2 if you entered name of a state");
+				int searchChoice = Integer.parseInt(sc.nextLine());
+				addressObj.viewPersonsByCityState(cityOrState,searchChoice);
+			}
+			case 8: {
 				System.out.println("Thank you for using the application");
 			}
 			}
