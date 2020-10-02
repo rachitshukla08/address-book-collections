@@ -3,7 +3,7 @@ package com.capgemini.collections.addressbook;
 import java.util.*;
 
 /**
- * Refactored to add multiple address book to the system. Each address book has a unique name
+ * Ability to search Person in a City or State across the multiple AddressBook
  */
 
 /**
@@ -19,17 +19,17 @@ public class AddressBookMain {
 	/**
 	 * @param contactObj
 	 */
-	public void addContact(ContactsUC1 contactObj) {
-		ContactsUC1 contact;
+	private void addContact(ContactsUC1 contactObj) {
 		boolean isPresent = addressList.stream().anyMatch(obj -> obj.equals(contactObj));
 		if (isPresent == false)
 			addressList.add(contactObj);
 		else
 			System.out.println("Contact already present. Duplication not allowed");
 	}
-	// Add contact to address book
+	// Add contact to address book UC 2 and ensure there is no duplicate contact UC
+	// 7
 
-	public boolean editDetails(String firstName, String lastName) {
+	private boolean editDetails(String firstName, String lastName) {
 		ContactsUC1 editObj;
 		boolean contactFound = false;
 		for (int i = 0; i < addressList.size(); i++) {
@@ -53,9 +53,9 @@ public class AddressBookMain {
 		}
 		return contactFound;
 	}
-	// Edit contact details
+	// Edit contact details UC3
 
-	public boolean removeDetails(String firstName, String lastName) {
+	private boolean removeDetails(String firstName, String lastName) {
 		ContactsUC1 removeObj;
 		boolean contactFound = false;
 		for (int i = 0; i < addressList.size(); i++) {
@@ -68,21 +68,32 @@ public class AddressBookMain {
 		}
 		return contactFound;
 	}
-	// Remove contact from given address book
+	// Remove contact from given address book UC4
 
-	public void addAddressList(String listName) {
+	private void addAddressList(String listName) {
 		List<ContactsUC1> newAddressList = new LinkedList<ContactsUC1>();
 		addressBookMap.put(listName, newAddressList);
 		System.out.println("Address Book added");
 	}
-	// Add an address book to map
+	// Add multiple address book to system UC6
+
+	private void searchAcrossCityState(int searchChoice, String cityOrState) {
+		for (Map.Entry<String, List<ContactsUC1>> entry : addressBookMap.entrySet()) {
+			List<ContactsUC1> list = entry.getValue();
+			if (searchChoice == 1)
+				list.stream().filter(obj -> obj.getCity().equals(cityOrState)).forEach(System.out::println);
+			else if(searchChoice == 2)
+				list.stream().filter(obj -> obj.getState().equals(cityOrState)).forEach(System.out::println);
+		}
+	}
+	// Search person in a city or state across multiple address book UC 8
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		AddressBookMain addressObj = new AddressBookMain();
 		int choice = 0;
 
-		while (choice != 6) {
+		while (choice != 7) {
 			if (addressObj.addressBookMap.isEmpty()) {
 				System.out.println("Please add an address book to begin");
 				System.out.println("Enter the name of address book that u want to add:");
@@ -104,7 +115,8 @@ public class AddressBookMain {
 			// you have to add an address book to begin. Also sets the address book for the
 			// current program loop.
 			System.out.println(
-					"Enter a choice: \n 1)Add a new contact \n 2)Edit a contact \n 3)Delete Contact \n 4)Add Address Book \n 5)View Address Book Contacts \n 6)Exit");
+					"Enter a choice: \n 1)Add a new contact \n 2)Edit a contact \n 3)Delete Contact \n 4)Add Address Book \n 5)View current Address Book Contacts"
+							+ " \n 6)Search person in a city or state across the multiple Address Books \n 7)Exit");
 			choice = Integer.parseInt(sc.nextLine());
 			switch (choice) {
 			case 1: {
@@ -166,6 +178,13 @@ public class AddressBookMain {
 				break;
 			}
 			case 6: {
+				System.out.println("Enter the name of city or state");
+				String cityOrState = sc.nextLine();
+				System.out.println("Enter 1 if you entered name of a city \nEnter 2 if you entered name of a state");
+				int searchChoice = Integer.parseInt(sc.nextLine());
+				addressObj.searchAcrossCityState(searchChoice, cityOrState);
+			}
+			case 7: {
 				System.out.println("Thank you for using the application");
 			}
 			}
