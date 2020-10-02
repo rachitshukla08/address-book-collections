@@ -3,7 +3,7 @@ package com.capgemini.collections.addressbook;
 import java.util.*;
 
 /**
- * Ability to view Persons by City or State
+ * Ability to get number of contact persons i.e.count by City or State
  */
 
 /**
@@ -25,7 +25,6 @@ public class AddressBookMain {
 			personStateMap.put(contactObj, contactObj.getState());
 		}
 	}
-	
 	private boolean addContact(ContactsUC1 contactObj) {
 		boolean isPresent = addressList.stream().anyMatch(obj -> obj.equals(contactObj));
 		if (isPresent == false) {
@@ -38,7 +37,6 @@ public class AddressBookMain {
 		}
 	}
 	// Add contact to address book UC 2 and ensure there is no duplicate contact UC7
-
 	private boolean editDetails(String firstName, String lastName) {
 		ContactsUC1 editObj;
 		boolean contactFound = false;
@@ -64,7 +62,6 @@ public class AddressBookMain {
 		return contactFound;
 	}
 	// Edit contact details UC3
-
 	private boolean removeDetails(String firstName, String lastName) {
 		ContactsUC1 removeObj;
 		boolean contactFound = false;
@@ -79,14 +76,12 @@ public class AddressBookMain {
 		return contactFound;
 	}
 	// Remove contact from given address book UC4
-
 	private void addAddressList(String listName) {
 		List<ContactsUC1> newAddressList = new LinkedList<ContactsUC1>();
 		addressBookMap.put(listName, newAddressList);
 		System.out.println("Address Book added");
 	}
 	// Add multiple address book to system UC6
-
 	private void searchPersonAcrossCityState(String searchPerson,int searchChoice, String cityOrState) {
 		for (Map.Entry<String, List<ContactsUC1>> entry : addressBookMap.entrySet()) {
 			List<ContactsUC1> list = entry.getValue();
@@ -96,8 +91,7 @@ public class AddressBookMain {
 				list.stream().filter(obj -> ((obj.getState().equals(cityOrState))&&(obj.getFirstName().equals(searchPerson)))).forEach(System.out::println);
 		}
 	}
-	// Search person in a city or state across multiple address book UC 8
-	
+	// Search person in a city or state across multiple address book UC 8	
 	private void viewPersonsByCityState(String cityOrState, int searchChoice) {
 		for (Map.Entry<String, List<ContactsUC1>> entry : addressBookMap.entrySet()) {
 			List<ContactsUC1> list = entry.getValue();
@@ -107,13 +101,27 @@ public class AddressBookMain {
 				list.stream().filter(obj -> obj.getState().equals(cityOrState)).forEach(System.out::println);
 		}
 	}
+	//Ability to view Persons by City or State UC9
+	private long getCountByCityState(String cityOrState, int searchChoice) {
+		long count=0;
+		for (Map.Entry<String, List<ContactsUC1>> entry : addressBookMap.entrySet()) {
+			List<ContactsUC1> list = entry.getValue();
+			if (searchChoice == 1)
+				count+= list.stream().filter(obj -> obj.getCity().equals(cityOrState)).count();
+			else if(searchChoice == 2)
+				count+= list.stream().filter(obj -> obj.getState().equals(cityOrState)).count();
+		}
+		return count;
+	}
+	//Ability to get number of contact persons (count by City or State) UC10
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		AddressBookMain addressObj = new AddressBookMain();
 		int choice = 0;
+		System.out.println("Welcome to address book program");
 
-		while (choice != 8) {
+		while (choice != 9) {
 			if (addressObj.addressBookMap.isEmpty()) {
 				System.out.println("Please add an address book to begin");
 				System.out.println("Enter the name of address book that u want to add:");
@@ -136,7 +144,8 @@ public class AddressBookMain {
 			// current program loop.
 			System.out.println(
 					"Enter a choice: \n 1)Add a new contact \n 2)Edit a contact \n 3)Delete Contact \n 4)Add Address Book \n 5)View current Address Book Contacts"
-							+ " \n 6)Search person in a city or state across the multiple Address Books \n 7)View persons by city or state \n 8)Exit");
+							+ " \n 6)Search person in a city or state across the multiple Address Books \n 7)View persons by city or state \n "
+							+ "8)Get count of contact persons by city or state \n 9)Exit");
 			choice = Integer.parseInt(sc.nextLine());
 			switch (choice) {
 			case 1: {
@@ -219,6 +228,14 @@ public class AddressBookMain {
 				break;
 			}
 			case 8: {
+				System.out.println("Enter the name of city or state");
+				String cityOrState = sc.nextLine();
+				System.out.println("Enter 1 if you entered name of a city \nEnter 2 if you entered name of a state");
+				int searchChoice = Integer.parseInt(sc.nextLine());
+				System.out.println("Total persons in "+cityOrState+" = "+addressObj.getCountByCityState(cityOrState,searchChoice));
+				break;
+			}
+			case 9: {
 				System.out.println("Thank you for using the application");
 			}
 			}
