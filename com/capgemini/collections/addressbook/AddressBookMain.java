@@ -12,7 +12,7 @@ import java.util.*;
  */
 public class AddressBookMain {
 	Scanner sc = new Scanner(System.in);
-	private List<ContactsUC1> addressList = new ArrayList<ContactsUC1>();
+	private List<ContactsUC1> addressList = new LinkedList<ContactsUC1>();
 	HashMap<String, List<ContactsUC1>> addressBookMap = new HashMap<String, List<ContactsUC1>>();
 	// Map to store multiple address books to satisfy condition of unique name
 	public void addContact(ContactsUC1 contactObj) {
@@ -62,7 +62,7 @@ public class AddressBookMain {
 	// Remove contact from given address book
 
 	public void addAddressList(String listName) {
-		List<ContactsUC1> newAddressList = new ArrayList<ContactsUC1>();
+		List<ContactsUC1> newAddressList = new LinkedList<ContactsUC1>();
 		addressBookMap.put(listName, newAddressList);
 		System.out.println("Address Book added");
 	}
@@ -72,7 +72,7 @@ public class AddressBookMain {
 		Scanner sc = new Scanner(System.in);
 		AddressBookMain addressObj = new AddressBookMain();
 		int choice = 0;
-
+		
 		while (choice != 6) {
 			if (addressObj.addressBookMap.isEmpty()) {
 				System.out.println("Please add an address book to begin");
