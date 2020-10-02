@@ -208,6 +208,7 @@ public class AddressBookMain {
 				System.out.println("Enter 1 if you entered name of a city \nEnter 2 if you entered name of a state");
 				int searchChoice = Integer.parseInt(sc.nextLine());
 				addressObj.searchPersonAcrossCityState(searchPerson,searchChoice, cityOrState);
+				break;
 			}
 			case 7: {
 				System.out.println("Enter the name of city or state");
@@ -215,6 +216,7 @@ public class AddressBookMain {
 				System.out.println("Enter 1 if you entered name of a city \nEnter 2 if you entered name of a state");
 				int searchChoice = Integer.parseInt(sc.nextLine());
 				addressObj.viewPersonsByCityState(cityOrState,searchChoice);
+				break;
 			}
 			case 8: {
 				System.out.println("Thank you for using the application");
