@@ -14,9 +14,18 @@ public class AddressBookMain {
 	Scanner sc = new Scanner(System.in);
 	private List<ContactsUC1> addressList = new LinkedList<ContactsUC1>();
 	HashMap<String, List<ContactsUC1>> addressBookMap = new HashMap<String, List<ContactsUC1>>();
+
 	// Map to store multiple address books to satisfy condition of unique name
+	/**
+	 * @param contactObj
+	 */
 	public void addContact(ContactsUC1 contactObj) {
-		addressList.add(contactObj);
+		ContactsUC1 contact;
+		boolean isPresent = addressList.stream().anyMatch(obj -> obj.equals(contactObj));
+		if (isPresent == false)
+			addressList.add(contactObj);
+		else
+			System.out.println("Contact already present. Duplication not allowed");
 	}
 	// Add contact to address book
 
@@ -66,13 +75,13 @@ public class AddressBookMain {
 		addressBookMap.put(listName, newAddressList);
 		System.out.println("Address Book added");
 	}
-	//Add an address book to map
+	// Add an address book to map
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		AddressBookMain addressObj = new AddressBookMain();
 		int choice = 0;
-		
+
 		while (choice != 6) {
 			if (addressObj.addressBookMap.isEmpty()) {
 				System.out.println("Please add an address book to begin");
@@ -80,7 +89,8 @@ public class AddressBookMain {
 				String listName = sc.nextLine();
 				addressObj.addAddressList(listName);
 			}
-			//If no address book is present, it asks to add at least one address book to begin
+			// If no address book is present, it asks to add at least one address book to
+			// begin
 			System.out.println("Enter the name of the address book you want to access");
 			String listName = sc.nextLine();
 			if (addressObj.addressBookMap.containsKey(listName)) {
@@ -91,7 +101,8 @@ public class AddressBookMain {
 				System.out.println("Address list with name" + listName + " not present. Please add it first.");
 			}
 			// This condition checks if there is at least one address book present. If not,
-			// you have to add an address book to begin. Also sets the address book for the current program loop.
+			// you have to add an address book to begin. Also sets the address book for the
+			// current program loop.
 			System.out.println(
 					"Enter a choice: \n 1)Add a new contact \n 2)Edit a contact \n 3)Delete Contact \n 4)Add Address Book \n 5)View Address Book Contacts \n 6)Exit");
 			choice = Integer.parseInt(sc.nextLine());
@@ -121,7 +132,8 @@ public class AddressBookMain {
 				break;
 			}
 			case 2: {
-				System.out.println("Enter first name, press Enter key, and then enter last name of person to edit details:");
+				System.out.println(
+						"Enter first name, press Enter key, and then enter last name of person to edit details:");
 				String firstName = sc.nextLine();
 				String lastName = sc.nextLine();
 				boolean contactFound = addressObj.editDetails(firstName, lastName);
@@ -132,7 +144,8 @@ public class AddressBookMain {
 				break;
 			}
 			case 3: {
-				System.out.println("Enter first name, press Enter key, and then enter last name of person to delete data");
+				System.out.println(
+						"Enter first name, press Enter key, and then enter last name of person to delete data");
 				String firstName = sc.nextLine();
 				String lastName = sc.nextLine();
 				boolean contactFound = addressObj.removeDetails(firstName, lastName);

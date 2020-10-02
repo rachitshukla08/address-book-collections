@@ -8,7 +8,7 @@ package com.capgemini.collections.addressbook;
  *
  */
 public class ContactsUC1 {
-	
+
 	private String firstName;
 	private String lastName;
 	private String address;
@@ -17,7 +17,7 @@ public class ContactsUC1 {
 	private String zip;
 	private String phoneNo;
 	private String email;
-	
+
 	public ContactsUC1(String firstName, String lastName, String address, String city, String state, String zip,
 			String phoneNo, String email) {
 		super();
@@ -94,8 +94,17 @@ public class ContactsUC1 {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 	public String toString() {
-		return firstName + " " + lastName+ " : "+ address +" : "+ city+" : "+state +" : "+zip +" : "+ phoneNo+" : " + email +"\n";
+		return firstName + " " + lastName + " : " + address + " : " + city + " : " + state + " : " + zip + " : "
+				+ phoneNo + " : " + email + "\n";
+	}
+
+	public boolean equals(Object o) {
+		ContactsUC1 contact = (ContactsUC1) o;
+		if ((this.firstName).equals(contact.firstName) && (this.lastName.equals(contact.lastName)))
+			return true;
+		else
+			return false;
 	}
 }
