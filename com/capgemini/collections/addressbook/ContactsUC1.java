@@ -1,16 +1,10 @@
 package com.capgemini.collections.addressbook;
 
-import java.util.Comparator;
-
-/**
- * 
- */
-
 /**
  * @author Rachit
  *
  */
-public class ContactsUC1 implements Comparator<ContactsUC1>{
+public class ContactsUC1 {
 
 	private String firstName;
 	private String lastName;
@@ -112,10 +106,5 @@ public class ContactsUC1 implements Comparator<ContactsUC1>{
 			return true;
 		else
 			return false;
-	}
-	
-	@Override
-	public int compare(ContactsUC1 o1, ContactsUC1 o2) {
-		return (o1.getFirstName()+o1.getLastName()).compareTo(o2.getFirstName()+o2.getLastName());
 	}
 }

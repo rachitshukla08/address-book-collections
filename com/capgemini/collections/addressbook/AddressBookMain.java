@@ -15,36 +15,37 @@ public class AddressBookMain {
 	private List<ContactsUC1> addressList = new LinkedList<ContactsUC1>();
 	HashMap<String, List<ContactsUC1>> addressBookMap = new HashMap<String, List<ContactsUC1>>();
 	// Map to store multiple address books to satisfy condition of unique name
-	HashMap<ContactsUC1,String> personCityMap = new HashMap<ContactsUC1, String>();
-	HashMap<ContactsUC1,String> personStateMap = new HashMap<ContactsUC1, String>();
-	//Dictionary of city and person as well as state and person for UC9
-	
+	HashMap<ContactsUC1, String> personCityMap = new HashMap<ContactsUC1, String>();
+	HashMap<ContactsUC1, String> personStateMap = new HashMap<ContactsUC1, String>();
+	// Dictionary of city and person as well as state and person for UC9
+
 	/**
 	 * @param contactIsAdded
 	 * @param contactObj
 	 */
-	private void addToDictionary(boolean contactIsAdded,ContactsUC1 contactObj) {
-		if(contactIsAdded==true) {
+	private void addToDictionary(boolean contactIsAdded, ContactsUC1 contactObj) {
+		if (contactIsAdded == true) {
 			personCityMap.put(contactObj, contactObj.getCity());
 			personStateMap.put(contactObj, contactObj.getState());
 		}
 	}
+
 	/**
 	 * @param contactObj
-	 * @return True if contact is added.
-	 * (Add contact to address book UC 2 and ensure there is no duplicate contact UC7)
+	 * @return True if contact is added. (Add contact to address book UC 2 and
+	 *         ensure there is no duplicate contact UC7)
 	 */
 	private boolean addContact(ContactsUC1 contactObj) {
 		boolean isPresent = addressList.stream().anyMatch(obj -> obj.equals(contactObj));
 		if (isPresent == false) {
 			addressList.add(contactObj);
 			return true;
-		}
-		else {
+		} else {
 			System.out.println("Contact already present. Duplication not allowed");
 			return false;
 		}
 	}
+
 	/**
 	 * @param firstName
 	 * @param lastName
@@ -74,6 +75,7 @@ public class AddressBookMain {
 		}
 		return contactFound;
 	}
+
 	/**
 	 * @param firstName
 	 * @param lastName
@@ -92,6 +94,7 @@ public class AddressBookMain {
 		}
 		return contactFound;
 	}
+
 	/**
 	 * @param listName
 	 */
@@ -100,20 +103,26 @@ public class AddressBookMain {
 		addressBookMap.put(listName, newAddressList);
 		System.out.println("Address Book added");
 	}
+
 	/**
 	 * @param searchPerson
 	 * @param searchChoice
-	 * @param cityOrState 
+	 * @param cityOrState
 	 */
-	private void searchPersonAcrossCityState(String searchPerson,int searchChoice, String cityOrState) {
+	private void searchPersonAcrossCityState(String searchPerson, int searchChoice, String cityOrState) {
 		for (Map.Entry<String, List<ContactsUC1>> entry : addressBookMap.entrySet()) {
 			List<ContactsUC1> list = entry.getValue();
 			if (searchChoice == 1)
-				list.stream().filter(obj -> ((obj.getCity().equals(cityOrState))&&(obj.getFirstName().equals(searchPerson)))).forEach(System.out::println);
-			else if(searchChoice == 2)
-				list.stream().filter(obj -> ((obj.getState().equals(cityOrState))&&(obj.getFirstName().equals(searchPerson)))).forEach(System.out::println);
+				list.stream().filter(
+						obj -> ((obj.getCity().equals(cityOrState)) && (obj.getFirstName().equals(searchPerson))))
+						.forEach(System.out::println);
+			else if (searchChoice == 2)
+				list.stream().filter(
+						obj -> ((obj.getState().equals(cityOrState)) && (obj.getFirstName().equals(searchPerson))))
+						.forEach(System.out::println);
 		}
 	}
+
 	/**
 	 * @param cityOrState
 	 * @param searchChoice
@@ -123,29 +132,59 @@ public class AddressBookMain {
 			List<ContactsUC1> list = entry.getValue();
 			if (searchChoice == 1)
 				list.stream().filter(obj -> obj.getCity().equals(cityOrState)).forEach(System.out::println);
-			else if(searchChoice == 2)
+			else if (searchChoice == 2)
 				list.stream().filter(obj -> obj.getState().equals(cityOrState)).forEach(System.out::println);
 		}
 	}
+
 	/**
 	 * @param cityOrState
 	 * @param searchChoice
 	 * @return Count of people in a city or state(UC10)
 	 */
 	private long getCountByCityState(String cityOrState, int searchChoice) {
-		long count=0;
+		long count = 0;
 		for (Map.Entry<String, List<ContactsUC1>> entry : addressBookMap.entrySet()) {
 			List<ContactsUC1> list = entry.getValue();
 			if (searchChoice == 1)
-				count+= list.stream().filter(obj -> obj.getCity().equals(cityOrState)).count();
-			else if(searchChoice == 2)
-				count+= list.stream().filter(obj -> obj.getState().equals(cityOrState)).count();
+				count += list.stream().filter(obj -> obj.getCity().equals(cityOrState)).count();
+			else if (searchChoice == 2)
+				count += list.stream().filter(obj -> obj.getState().equals(cityOrState)).count();
 		}
 		return count;
 	}
-	
+
+	/**
+	 * @param sortList
+	 * @return Sorted Address Book List By Name (UC11)
+	 */
 	private List<ContactsUC1> sortAddressBookByName(List<ContactsUC1> sortList) {
-		Collections.sort(sortList,new ContactsUC1());
+		FlexibleSort flexibleSort = new FlexibleSort(FlexibleSort.Order.NAME);
+		Collections.sort(sortList, flexibleSort);
+		return sortList;
+	}
+
+	/**
+	 * @param sortChoice
+	 * @param sortList
+	 * @return Sorted Address Book List By Choice (UC12)
+	 */
+	private List<ContactsUC1> sortAddressBookByChoice(int sortChoice, List<ContactsUC1> sortList) {
+		FlexibleSort flexibleSort = null;
+		switch (sortChoice) {
+		case 1:
+			flexibleSort = new FlexibleSort(FlexibleSort.Order.CITY);
+			break;
+		case 2:
+			flexibleSort = new FlexibleSort(FlexibleSort.Order.STATE);
+			break;
+		case 3:
+			flexibleSort = new FlexibleSort(FlexibleSort.Order.ZIP);
+			break;
+		default:
+			System.out.println("Invalid Choice");
+		}
+		Collections.sort(sortList, flexibleSort);
 		return sortList;
 	}
 
@@ -155,7 +194,7 @@ public class AddressBookMain {
 		int choice = 0;
 		System.out.println("Welcome to address book program");
 
-		while (choice != 10) {
+		while (choice != 11) {
 			if (addressObj.addressBookMap.isEmpty()) {
 				System.out.println("Please add an address book to begin");
 				System.out.println("Enter the name of address book that u want to add:");
@@ -169,12 +208,13 @@ public class AddressBookMain {
 			}
 
 			else {
-				System.out.println("Address list with name" + listName + " not present. Please add it first.");
+				System.out.println("Address list with name :" + listName + " not present. Please add it first.");
 			}
 			System.out.println(
 					"Enter a choice: \n 1)Add a new contact \n 2)Edit a contact \n 3)Delete Contact \n 4)Add Address Book \n 5)View current Address Book Contacts"
 							+ " \n 6)Search person in a city or state across the multiple Address Books \n 7)View persons by city or state \n "
-							+ "8)Get count of contact persons by city or state \n 9)Sort entries by name in current address book \n 10)Exit");
+							+ "8)Get count of contact persons by city or state \n 9)Sort entries by name in current address book \n "
+							+ "10)Sort entries in current address book by city, state or zip \n 11)Exit");
 			choice = Integer.parseInt(sc.nextLine());
 			switch (choice) {
 			case 1: {
@@ -199,9 +239,9 @@ public class AddressBookMain {
 				ContactsUC1 contactObj = new ContactsUC1(firstName, lastName, address, city, state, zip, phoneNo,
 						email);
 				boolean contactIsAdded = addressObj.addContact(contactObj);
-				//UC1
-				addressObj.addToDictionary(contactIsAdded,contactObj);
-				//UC9
+				// UC1
+				addressObj.addToDictionary(contactIsAdded, contactObj);
+				// UC9
 				break;
 			}
 			case 2: {
@@ -245,7 +285,7 @@ public class AddressBookMain {
 				String cityOrState = sc.nextLine();
 				System.out.println("Enter 1 if you entered name of a city \nEnter 2 if you entered name of a state");
 				int searchChoice = Integer.parseInt(sc.nextLine());
-				addressObj.searchPersonAcrossCityState(searchPerson,searchChoice, cityOrState);
+				addressObj.searchPersonAcrossCityState(searchPerson, searchChoice, cityOrState);
 				break;
 			}
 			case 7: {
@@ -253,7 +293,7 @@ public class AddressBookMain {
 				String cityOrState = sc.nextLine();
 				System.out.println("Enter 1 if you entered name of a city \nEnter 2 if you entered name of a state");
 				int searchChoice = Integer.parseInt(sc.nextLine());
-				addressObj.viewPersonsByCityState(cityOrState,searchChoice);
+				addressObj.viewPersonsByCityState(cityOrState, searchChoice);
 				break;
 			}
 			case 8: {
@@ -261,7 +301,8 @@ public class AddressBookMain {
 				String cityOrState = sc.nextLine();
 				System.out.println("Enter 1 if you entered name of a city \nEnter 2 if you entered name of a state");
 				int searchChoice = Integer.parseInt(sc.nextLine());
-				System.out.println("Total persons in "+cityOrState+" = "+addressObj.getCountByCityState(cityOrState,searchChoice));
+				System.out.println("Total persons in " + cityOrState + " = "
+						+ addressObj.getCountByCityState(cityOrState, searchChoice));
 				break;
 			}
 			case 9: {
@@ -271,10 +312,17 @@ public class AddressBookMain {
 				break;
 			}
 			case 10: {
+				System.out.println("Enter 1 to sort by city \nEnter 2 to sort by state \nEnter 3 to sort by zipcode");
+				int sortChoice = Integer.parseInt(sc.nextLine());
+				List<ContactsUC1> sortedEntriesList = addressObj.sortAddressBookByChoice(sortChoice,
+						addressObj.addressList);
+				System.out.println(sortedEntriesList);
+				break;
+			}
+			case 11: {
 				System.out.println("Thank you for using the application");
 			}
 			}
 		}
 	}
-	
 }
