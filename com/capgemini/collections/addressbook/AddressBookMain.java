@@ -19,12 +19,21 @@ public class AddressBookMain {
 	HashMap<ContactsUC1,String> personStateMap = new HashMap<ContactsUC1, String>();
 	//Dictionary of city and person as well as state and person for UC9
 	
+	/**
+	 * @param contactIsAdded
+	 * @param contactObj
+	 */
 	private void addToDictionary(boolean contactIsAdded,ContactsUC1 contactObj) {
 		if(contactIsAdded==true) {
 			personCityMap.put(contactObj, contactObj.getCity());
 			personStateMap.put(contactObj, contactObj.getState());
 		}
 	}
+	/**
+	 * @param contactObj
+	 * @return True if contact is added.
+	 * (Add contact to address book UC 2 and ensure there is no duplicate contact UC7)
+	 */
 	private boolean addContact(ContactsUC1 contactObj) {
 		boolean isPresent = addressList.stream().anyMatch(obj -> obj.equals(contactObj));
 		if (isPresent == false) {
@@ -36,7 +45,11 @@ public class AddressBookMain {
 			return false;
 		}
 	}
-	// Add contact to address book UC 2 and ensure there is no duplicate contact UC7
+	/**
+	 * @param firstName
+	 * @param lastName
+	 * @return True if details successfully edited(UC3)
+	 */
 	private boolean editDetails(String firstName, String lastName) {
 		ContactsUC1 editObj;
 		boolean contactFound = false;
@@ -61,7 +74,11 @@ public class AddressBookMain {
 		}
 		return contactFound;
 	}
-	// Edit contact details UC3
+	/**
+	 * @param firstName
+	 * @param lastName
+	 * @return True if contact successfully removed(UC4)
+	 */
 	private boolean removeDetails(String firstName, String lastName) {
 		ContactsUC1 removeObj;
 		boolean contactFound = false;
@@ -75,13 +92,19 @@ public class AddressBookMain {
 		}
 		return contactFound;
 	}
-	// Remove contact from given address book UC4
+	/**
+	 * @param listName
+	 */
 	private void addAddressList(String listName) {
 		List<ContactsUC1> newAddressList = new LinkedList<ContactsUC1>();
 		addressBookMap.put(listName, newAddressList);
 		System.out.println("Address Book added");
 	}
-	// Add multiple address book to system UC6
+	/**
+	 * @param searchPerson
+	 * @param searchChoice
+	 * @param cityOrState 
+	 */
 	private void searchPersonAcrossCityState(String searchPerson,int searchChoice, String cityOrState) {
 		for (Map.Entry<String, List<ContactsUC1>> entry : addressBookMap.entrySet()) {
 			List<ContactsUC1> list = entry.getValue();
@@ -91,7 +114,10 @@ public class AddressBookMain {
 				list.stream().filter(obj -> ((obj.getState().equals(cityOrState))&&(obj.getFirstName().equals(searchPerson)))).forEach(System.out::println);
 		}
 	}
-	// Search person in a city or state across multiple address book UC 8	
+	/**
+	 * @param cityOrState
+	 * @param searchChoice
+	 */
 	private void viewPersonsByCityState(String cityOrState, int searchChoice) {
 		for (Map.Entry<String, List<ContactsUC1>> entry : addressBookMap.entrySet()) {
 			List<ContactsUC1> list = entry.getValue();
@@ -101,7 +127,11 @@ public class AddressBookMain {
 				list.stream().filter(obj -> obj.getState().equals(cityOrState)).forEach(System.out::println);
 		}
 	}
-	//Ability to view Persons by City or State UC9
+	/**
+	 * @param cityOrState
+	 * @param searchChoice
+	 * @return Count of people in a city or state(UC10)
+	 */
 	private long getCountByCityState(String cityOrState, int searchChoice) {
 		long count=0;
 		for (Map.Entry<String, List<ContactsUC1>> entry : addressBookMap.entrySet()) {
@@ -113,7 +143,11 @@ public class AddressBookMain {
 		}
 		return count;
 	}
-	//Ability to get number of contact persons (count by City or State) UC10
+	
+	private List<ContactsUC1> sortAddressBookByName(List<ContactsUC1> sortList) {
+		Collections.sort(sortList,new ContactsUC1());
+		return sortList;
+	}
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
@@ -121,15 +155,13 @@ public class AddressBookMain {
 		int choice = 0;
 		System.out.println("Welcome to address book program");
 
-		while (choice != 9) {
+		while (choice != 10) {
 			if (addressObj.addressBookMap.isEmpty()) {
 				System.out.println("Please add an address book to begin");
 				System.out.println("Enter the name of address book that u want to add:");
 				String listName = sc.nextLine();
 				addressObj.addAddressList(listName);
 			}
-			// If no address book is present, it asks to add at least one address book to
-			// begin
 			System.out.println("Enter the name of the address book you want to access");
 			String listName = sc.nextLine();
 			if (addressObj.addressBookMap.containsKey(listName)) {
@@ -139,13 +171,10 @@ public class AddressBookMain {
 			else {
 				System.out.println("Address list with name" + listName + " not present. Please add it first.");
 			}
-			// This condition checks if there is at least one address book present. If not,
-			// you have to add an address book to begin. Also sets the address book for the
-			// current program loop.
 			System.out.println(
 					"Enter a choice: \n 1)Add a new contact \n 2)Edit a contact \n 3)Delete Contact \n 4)Add Address Book \n 5)View current Address Book Contacts"
 							+ " \n 6)Search person in a city or state across the multiple Address Books \n 7)View persons by city or state \n "
-							+ "8)Get count of contact persons by city or state \n 9)Exit");
+							+ "8)Get count of contact persons by city or state \n 9)Sort entries by name in current address book \n 10)Exit");
 			choice = Integer.parseInt(sc.nextLine());
 			switch (choice) {
 			case 1: {
@@ -236,9 +265,16 @@ public class AddressBookMain {
 				break;
 			}
 			case 9: {
+				List<ContactsUC1> sortedEntriesList = addressObj.sortAddressBookByName(addressObj.addressList);
+				System.out.println("Entries sorted in current address book. Sorted Address Book Entries:");
+				System.out.println(sortedEntriesList);
+				break;
+			}
+			case 10: {
 				System.out.println("Thank you for using the application");
 			}
 			}
 		}
 	}
+	
 }
