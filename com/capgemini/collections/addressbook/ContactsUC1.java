@@ -96,8 +96,8 @@ public class ContactsUC1 {
 	}
 
 	public String toString() {
-		return firstName + " " + lastName + " : " + address + " : " + city + " : " + state + " : " + zip + " : "
-				+ phoneNo + " : " + email + "\n";
+		return "First name="+firstName + ", Last name=" + lastName + ", Address=" + address + ", City=" + city + ", State=" + state + ", Zip=" + zip + ", Phone No="
+				+ phoneNo + ", Email=" + email + "\n";
 	}
 
 	public boolean equals(Object o) {
