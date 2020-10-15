@@ -1,4 +1,4 @@
-package com.capgemini.collections.addressbook;
+package com.capgemini.collections.addressbook.service;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -7,8 +7,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+
+import com.capgemini.collections.addressbook.ContactsUC1;
 
 public class AddressBookIOService {
 	private static String HOME;
@@ -34,19 +34,19 @@ public class AddressBookIOService {
 						for (int position = 0; position < dataArr.length; position++) {
 							String firstName = dataArr[position].replaceAll("First name=", "");
 							position++;
-							String lastName = dataArr[position].replaceAll(" Last name=", "");
+							String lastName = dataArr[position].replaceAll("Last name=", "");
 							position++;
-							String address = dataArr[position].replaceAll(" Address=", "");
+							String address = dataArr[position].replaceAll("Address=", "");
 							position++;
-							String city = dataArr[position].replaceAll(" City=", "");
+							String city = dataArr[position].replaceAll("City=", "");
 							position++;
-							String state = dataArr[position].replaceAll(" State=", "");
+							String state = dataArr[position].replaceAll("State=", "");
 							position++;
-							String zip = dataArr[position].replaceAll(" Zip=", "");
+							String zip = dataArr[position].replaceAll("Zip=", "");
 							position++;
-							String phone = dataArr[position].replaceAll(" Phone No=", "");
+							String phone = dataArr[position].replaceAll("Phone No=", "");
 							position++;
-							String email = dataArr[position].replaceAll(" Email=", "");
+							String email = dataArr[position].replaceAll("Email=", "");
 							ContactsUC1 contact = new ContactsUC1(firstName, lastName, address, city, state, zip, phone,
 									email);
 							contactList.add(contact);

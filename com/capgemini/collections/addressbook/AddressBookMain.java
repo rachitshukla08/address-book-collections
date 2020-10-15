@@ -3,6 +3,8 @@ package com.capgemini.collections.addressbook;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.capgemini.collections.addressbook.service.AddressBookCSVService;
+
 /**
  * Ability to get number of contact persons i.e.count by City or State
  */
@@ -13,7 +15,7 @@ import java.util.stream.Collectors;
  */
 public class AddressBookMain {
 	Scanner sc = new Scanner(System.in);
-	AddressBookIOService addressBookIOService = new AddressBookIOService();
+	AddressBookCSVService addressBookCsvService = new AddressBookCSVService();
 	private List<ContactsUC1> addressList = new LinkedList<ContactsUC1>();
 	HashMap<String, List<ContactsUC1>> addressBookMap = new HashMap<String, List<ContactsUC1>>();
 	// Map to store multiple address books to satisfy condition of unique name
@@ -23,7 +25,13 @@ public class AddressBookMain {
 	private String addressListName;
 
 	private void init() {
-		addressBookMap = addressBookIOService.getAddressBookMap();
+		addressBookMap = addressBookCsvService.getAddressBookMap();
+	}
+	
+
+	private void setAddressListName(String listName) {
+		addressListName = listName;
+		
 	}
 
 	/**
@@ -46,7 +54,8 @@ public class AddressBookMain {
 		boolean isPresent = addressList.stream().anyMatch(obj -> obj.equals(contactObj));
 		if (isPresent == false) {
 			addressList.add(contactObj);
-			new AddressBookIOService().writeContactToAddressBook(contactObj, addressListName);
+			System.out.println(addressListName);
+			new AddressBookCSVService().writeContactToAddressBook(contactObj, addressListName);
 			System.out.println("Contact added");
 			return true;
 		} else {
@@ -110,7 +119,7 @@ public class AddressBookMain {
 	private void addAddressList(String listName) {
 		List<ContactsUC1> newAddressList = new LinkedList<ContactsUC1>();
 		addressBookMap.put(listName, newAddressList);
-		boolean isAddressBookAdded = new AddressBookIOService().addAddressBook(listName);
+		boolean isAddressBookAdded = new AddressBookCSVService().addAddressBook(listName);
 		if (isAddressBookAdded)
 			System.out.println("Address book added");
 		else
@@ -207,10 +216,9 @@ public class AddressBookMain {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		AddressBookMain addressObj = new AddressBookMain();
-		addressObj.init();
 		int choice = 0;
 		System.out.println("Welcome to address book program");
-
+		addressObj.init();
 		while (choice != 12) {
 			if (addressObj.addressBookMap.isEmpty()) {
 				System.out.println("Please add an address book to begin");
@@ -222,6 +230,7 @@ public class AddressBookMain {
 			String listName = sc.nextLine();
 			if (addressObj.addressBookMap.containsKey(listName)) {
 				addressObj.addressList = addressObj.addressBookMap.get(listName);
+				addressObj.setAddressListName(listName);
 			}
 
 			else {
@@ -337,7 +346,7 @@ public class AddressBookMain {
 				break;
 			}
 			case 11: {
-				addressObj.addressBookIOService.print();
+				addressObj.addressBookCsvService.print();
 				break;
 			}
 			case 12: {
