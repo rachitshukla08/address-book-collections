@@ -1,9 +1,14 @@
 package com.capgemini.collections.addressbook;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 import com.capgemini.collections.addressbook.service.AddressBookCSVService;
+import com.capgemini.collections.addressbook.service.AddressBookJSONService;
 
 /**
  * Ability to get number of contact persons i.e.count by City or State
@@ -11,11 +16,11 @@ import com.capgemini.collections.addressbook.service.AddressBookCSVService;
 
 /**
  * @author Rachit
- *
+ *z
  */
 public class AddressBookMain {
 	Scanner sc = new Scanner(System.in);
-	AddressBookCSVService addressBookCsvService = new AddressBookCSVService();
+	AddressBookJSONService addressBookJsonService;
 	private List<ContactsUC1> addressList = new LinkedList<ContactsUC1>();
 	HashMap<String, List<ContactsUC1>> addressBookMap = new HashMap<String, List<ContactsUC1>>();
 	// Map to store multiple address books to satisfy condition of unique name
@@ -25,7 +30,8 @@ public class AddressBookMain {
 	private String addressListName;
 
 	private void init() {
-		addressBookMap = addressBookCsvService.getAddressBookMap();
+		addressBookJsonService = new AddressBookJSONService();
+		addressBookMap = addressBookJsonService.getAddressBookMap();
 	}
 	
 
@@ -55,7 +61,7 @@ public class AddressBookMain {
 		if (isPresent == false) {
 			addressList.add(contactObj);
 			System.out.println(addressListName);
-			new AddressBookCSVService().writeContactToAddressBook(contactObj, addressListName);
+			new AddressBookJSONService().writeContactToAddressBook(contactObj, addressListName);
 			System.out.println("Contact added");
 			return true;
 		} else {
@@ -119,7 +125,7 @@ public class AddressBookMain {
 	private void addAddressList(String listName) {
 		List<ContactsUC1> newAddressList = new LinkedList<ContactsUC1>();
 		addressBookMap.put(listName, newAddressList);
-		boolean isAddressBookAdded = new AddressBookCSVService().addAddressBook(listName);
+		boolean isAddressBookAdded = new AddressBookJSONService().addAddressBook(listName);
 		if (isAddressBookAdded)
 			System.out.println("Address book added");
 		else
@@ -346,7 +352,7 @@ public class AddressBookMain {
 				break;
 			}
 			case 11: {
-				addressObj.addressBookCsvService.print();
+				addressObj.addressBookJsonService.print();
 				break;
 			}
 			case 12: {
