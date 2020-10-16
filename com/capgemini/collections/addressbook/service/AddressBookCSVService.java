@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.capgemini.collections.addressbook.ContactsUC1;
+import com.capgemini.collections.addressbook.ReadWriteService;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.bean.StatefulBeanToCsv;
@@ -18,7 +19,7 @@ import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
-public class AddressBookCSVService {
+public class AddressBookCSVService implements ReadWriteService {
 	private static String HOME;
 	private HashMap<String, List<ContactsUC1>> addressBookMap;
 
@@ -27,7 +28,7 @@ public class AddressBookCSVService {
 		addressBookMap = new HashMap<String, List<ContactsUC1>>();
 		readDataFromAddressBook();
 	}
-	
+
 	/**
 	 * Get data from Address Book.txt file from directory and store it to address
 	 * book map
@@ -59,7 +60,7 @@ public class AddressBookCSVService {
 					}
 					String fileName = file.toAbsolutePath().toString().replace(HOME + "\\", "");
 					addressBookMap.put(fileName.substring(0, fileName.length() - 4), contactList);
-					
+
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -113,7 +114,7 @@ public class AddressBookCSVService {
 			e1.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Print contact details from address books
 	 */
@@ -136,5 +137,5 @@ public class AddressBookCSVService {
 	public void setAddressBookMap(HashMap<String, List<ContactsUC1>> addressBookMap) {
 		this.addressBookMap = addressBookMap;
 	}
-	
+
 }
