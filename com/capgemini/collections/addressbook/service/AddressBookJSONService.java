@@ -16,11 +16,10 @@ import com.capgemini.collections.addressbook.ReadWriteService;
 import com.google.gson.Gson;
 
 public class AddressBookJSONService implements ReadWriteService {
-	private static String HOME;
+	private static String HOME = "D:\\eclipse_workspace\\Address Book Collections\\src\\com\\capgemini\\collections\\addressbook\\Address Books JSON";
 	private HashMap<String, List<ContactsUC1>> addressBookMap;
 
 	public AddressBookJSONService() {
-		HOME = "D:\\eclipse_workspace\\Address Book Collections\\src\\com\\capgemini\\collections\\addressbook\\Address Books JSON";
 		addressBookMap = new HashMap<String, List<ContactsUC1>>();
 		readDataFromAddressBook();
 	}
@@ -93,14 +92,6 @@ public class AddressBookJSONService implements ReadWriteService {
 	 */
 	public void print() {
 		addressBookMap.entrySet().stream().map(entry -> entry.getValue()).forEach(System.out::println);
-	}
-
-	public static String getHOME() {
-		return HOME;
-	}
-
-	public static void setHOME(String hOME) {
-		HOME = hOME;
 	}
 
 	public HashMap<String, List<ContactsUC1>> getAddressBookMap() {

@@ -20,11 +20,10 @@ import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
 public class AddressBookCSVService implements ReadWriteService {
-	private static String HOME;
+	private static String HOME = "D:\\eclipse_workspace\\Address Book Collections\\src\\com\\capgemini\\collections\\addressbook\\Address Books CSV";
 	private HashMap<String, List<ContactsUC1>> addressBookMap;
 
 	public AddressBookCSVService() {
-		HOME = "D:\\eclipse_workspace\\Address Book Collections\\src\\com\\capgemini\\collections\\addressbook\\Address Books CSV";
 		addressBookMap = new HashMap<String, List<ContactsUC1>>();
 		readDataFromAddressBook();
 	}
@@ -120,14 +119,6 @@ public class AddressBookCSVService implements ReadWriteService {
 	 */
 	public void print() {
 		addressBookMap.entrySet().stream().map(entry -> entry.getValue()).forEach(System.out::println);
-	}
-
-	public static String getHOME() {
-		return HOME;
-	}
-
-	public static void setHOME(String hOME) {
-		HOME = hOME;
 	}
 
 	public HashMap<String, List<ContactsUC1>> getAddressBookMap() {
